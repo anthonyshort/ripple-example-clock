@@ -1,6 +1,7 @@
 var ripple = require('ripple');
 var each = require('each');
 var intervals = require('intervals');
+var bind = require('bind-methods');
 var template = require('./template.html');
 var suffixed = require('date-suffix');
 var month = require('date-month');
@@ -8,12 +9,13 @@ var day = require('date-day');
 
 var Clock = ripple(template)
   .use(each)
+  .use(bind)
   .use(intervals);
 
 // Hook for when the view is created. This fires
 // before the view is rendered
 Clock.mounted(function(){
-  setInterval(this.tick, 1000);
+  this.setInterval(this.tick, 1000);
 });
 
 // Add interpolation filters
@@ -35,7 +37,7 @@ Clock.filter({
 // Every second this will get called and
 // update the current time
 Clock.prototype.tick = function(){
-  clock.set('time', new Date());
+  this.set('time', new Date());
 };
 
 module.exports = Clock;
